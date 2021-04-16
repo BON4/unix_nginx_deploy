@@ -1,0 +1,9 @@
+server {
+    server_name _;
+
+    listen ${PROXY_OUT_PORT};
+    
+    location / {
+        proxy_pass http://${HOST_NAME}:${PROXY_IN_PORT}/;
+    }
+}

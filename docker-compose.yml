@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+    nginx:
+        container_name: my-nginx
+        build:
+            context: nginx
+            dockerfile: nginx.Dockerfile
+        environment: 
+            - PROXY_OUT_PORT=${PROXY_OUT_PORT}
+            - PROXY_IN_PORT=${PROXY_IN_PORT} #Port that proxyed services will run
+            - HOST_NAME=${A_APP_NAME}
+        links: 
+            - testservice
+        ports: 
+            - "${PROXY_OUT_PORT}:${PROXY_OUT_PORT}"
+
+    testservice:
+        container_name: ${A_APP_NAME}
+        build:
+            context: testservice
+            dockerfile: app.Dockerfile
+        environment: 
+            - PROXY_IN_PORT=${PROXY_IN_PORT}
